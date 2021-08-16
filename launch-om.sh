@@ -1,6 +1,3 @@
-#
-# USAGE: ./launch-om.sh key-name key-path.pem security-group-id
-# ex: ./launch-om.sh mykey ~/AWS/mykey.pem sg-021892189acb81
 
 source config.sh
 
