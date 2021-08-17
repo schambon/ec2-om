@@ -7,8 +7,7 @@ This creates 4 VMs in EC2:
 
 it uses the OM API to initialize a basic system (app db, initial user and org) and deploys and starts the MongoDB Agent on the demo instances. From there on you can demo how to create MongoDB replica sets, etc.
 
-Note that the backup infrastructure is *not* deployed at this time.
-
+*NEW*: basic backup (FS store, oplog colocated with appdb - never do that at home, kids!) is provisioned, too.
 
 Prerequisites
 -------------
