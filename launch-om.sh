@@ -15,7 +15,9 @@ echo "Done"
 # wait a couple seconds that the instance is up
 sleep 10
 
-export PUBDNS=$(aws ec2 describe-instances --filters "Name=tag:owner,Values=$OWNERTAG" "Name=tag:Name,Values=$NAMETAG-om" "Name=instance-state-name,Values=running" | jq -r '.Reservations[0].Instances[0].PublicDnsName')
+res=$(aws ec2 describe-instances --filters "Name=tag:owner,Values=$OWNERTAG" "Name=tag:Name,Values=$NAMETAG-om" "Name=instance-state-name,Values=running")
+export PUBDNS=$(echo $res | jq -r '.Reservations[0].Instances[0].PublicDnsName')
+PRIVDNS=$(echo $res | jq -r '.Reservations[0].Instances[0].PrivateDnsName')
 
 echo "Public DNS is $PUBDNS; waiting for ssh"
 
@@ -31,8 +33,7 @@ done
 # install mongo, shell, and OM rpms
 ssh -i $KEYPATH -oStrictHostKeyChecking=no ec2-user@$PUBDNS <<EOF
 sudo yum install -y $OM_VERSION
-sudo yum install -y https://repo.mongodb.org/yum/amazon/2/mongodb-org/4.4/x86_64/RPMS/mongodb-org-server-4.4.6-1.amzn2.x86_64.rpm
-sudo yum install -y https://repo.mongodb.org/yum/amazon/2/mongodb-org/4.4/x86_64/RPMS/mongodb-org-shell-4.4.6-1.amzn2.x86_64.rpm
+sudo yum install -y https://repo.mongodb.org/yum/amazon/2/mongodb-org/5.0/x86_64/RPMS/mongodb-org-server-5.0.2-1.amzn2.x86_64.rpm
 sudo systemctl start mongod
 sudo tee -a /opt/mongodb/mms/conf/conf-mms.properties <<-CONF_FILE
 mms.ignoreInitialUiSetup=true
@@ -48,6 +49,10 @@ mms.mail.port=25
 mms.user.invitationOnly=true
 CONF_FILE
 sudo systemctl start mongodb-mms
+sudo mkdir /snapshots
+sudo chown mongodb-mms:mongodb-mms /snapshots
+sudo mkdir /heads
+sudo chown mongodb-mms:mongodb-mms /heads
 EOF
 
 if [ $? -eq 0 ]; then
@@ -84,7 +89,22 @@ PRIVKEY=$(echo $res | jq -r '.programmaticApiKey.privateKey')
 
 echo "API key is $PUBKEY:$PRIVKEY"
 
+# provision backup
+curl --digest --user "$PUBKEY:$PRIVKEY" -s -X POST \
+ -H "Content-Type: application/json" -d "{\"id\": \"filesystemStore\", \"storePath\": \"/snapshots\", \"assignmentEnabled\": true, \"wtCompressionSetting\": \"NONE\", \"mmapv1CompressionSetting\": \"NONE\"}" \
+ http://$PUBDNS:8080/api/public/v1.0/admin/backup/snapshot/fileSystemConfigs
 
+curl --digest --user "$PUBKEY:$PRIVKEY" -s -X POST \
+ -H "Content-Type: application/json" -d "{\"id\": \"oplogStore\", \"uri\": \"mongodb://localhost:27017\", \"assignmentEnabled\": true}" \
+ http://$PUBDNS:8080/api/public/v1.0/admin/backup/oplog/mongoConfigs
+
+ curl --digest --user "$PUBKEY:$PRIVKEY" -s -X POST \
+  -H "Content-Type: application/json" -d "{\"id\": \"syncStore\", \"uri\": \"mongodb://localhost:27017\", \"assignmentEnabled\": true}" \
+  http://$PUBDNS:8080/api/public/v1.0/admin/backup/sync/mongoConfigs
+
+
+
+# create org & Project
 ORG_ID=$(curl --user "$PUBKEY:$PRIVKEY" --digest \
 -s -X POST -H "Content-Type: application/json" \
 --data "{\"name\":\"demo-org\"}" \
@@ -104,6 +124,10 @@ echo "Project is $PROJECT_ID, Agent API Key is $AGENT_API_KEY"
 ./launch-hosts.sh $PUBDNS $PROJECT_ID $AGENT_API_KEY
 
 
+# enable backup daemon
+curl --digest --user "$PUBKEY:$PRIVKEY" -s -X PUT \
+  -H "Content-Type: application/json" -d "{\"assignmentEnabled\": true, \"configured\": true, \"machine\": {\"headRootDirectory\": \"/heads/\", \"machine\": \"$PRIVDNS\"}}" \
+  http://$PUBDNS:8080/api/public/v1.0/admin/backup/daemon/configs/$PRIVDNS
 
 echo "-----"
 echo "All servers started; go to http://$PUBDNS:8080 and log in with admin@localhost.com / abc_ABC1"
