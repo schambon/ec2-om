@@ -1,7 +1,7 @@
 
 source config.sh
 
-OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-5.0.1.97.20210805T0614Z-1.x86_64.rpm
+OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-5.0.2.100.20210901T1556Z-1.x86_64.rpm
 
 export AWS_PAGER=""
 # start instance to run Ops Manager
