@@ -1,4 +1,4 @@
-AGENT_VERSION=11.0.6.6981
+AGENT_VERSION=11.0.7.6992
 
 export AWS_PAGER=""
 # $1 is supposed to have the OM host's public PublicDnsName
@@ -6,19 +6,21 @@ PUBDNS=$1
 PROJECT_ID=$2
 AGENT_API_KEY=$3
 
+NUM_HOSTS=3
+
 source config.sh
 
 
 echo "Starting instances and downloading agent from $PUBDNS; Project is $PROJECT_ID and agent key is $AGENT_API_KEY"
 
 # start 3 hosts and install the agent
-aws ec2 run-instances --image-id $IMAGE --count 3 --instance-type t2.small --key-name $KEYNAME \
+aws ec2 run-instances --image-id $IMAGE --count $NUM_HOSTS --instance-type t2.small --key-name $KEYNAME \
   --security-group-ids $SECGROUP --block-device-mappings '[{"DeviceName": "/dev/xvda", "Ebs": {"DeleteOnTermination": true, "VolumeSize": 100, "VolumeType": "gp3"}}]' \
   --tag-specification "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG-instances\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"2021-12-31\"}]" > /dev/null
 
 wait 1
 count=$(aws ec2 describe-instances --filters "Name=tag:owner,Values=$OWNERTAG" "Name=tag:Name,Values=$NAMETAG-instances" "Name=instance-state-name,Values=running" | jq -r '.Reservations[0].Instances | length')
-until test $count -eq 3
+until test $count -eq $NUM_HOSTS
 do
   echo "Waiting until we have 3 instances"
   sleep 1
