@@ -111,6 +111,12 @@ ORG_ID=$(curl --user "$PUBKEY:$PRIVKEY" --digest \
 http://$PUBDNS:8080/api/public/v1.0/orgs | jq -r '.id')
 echo "Org id: $ORG_ID"
 
+# invite user as org owner
+curl --user "$PUBKEY:$PRIVKEY" --digest \
+-s -X POST -H "Content-Type: application/json" \
+--data "{\"roles\": [ \"ORG_OWNER\" ], \"username\": \"admin@localhost.com\" }" \
+http://$PUBDNS:8080/api/public/v1.0/orgs/$ORG_ID/invites
+
 # create project - for some reason it yields a 500, so we create and then list and get the new ID
 res=$(curl --user "$PUBKEY:$PRIVKEY" --digest \
  -s -X POST -H "Content-Type: application/json" \
