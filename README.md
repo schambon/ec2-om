@@ -13,12 +13,16 @@ Prerequisites
 -------------
 
 * AWS CLI
-  * valid AWS access key / secret access key / session token (either in env vars or in ~/.aws/credentials)
+  * Install AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-mac.html
+  * Valid AWS access key / secret access key / session token (either in env vars or in ~/.aws/credentials) --> Open Okta, access AWS, then click on "Command line or programmatic access" from the "AWS Account" button. 
+  * In the terminal, copy and paste the lines under "Option1: Set AWS environment variables"
+  * In the terminal, type "aws configure" and follow the instructions (access key, secret key, your AWS region, and json as output format)
   * Ops Manager will be installed in your default region
-* jq
+* jq (install from the terminal: brew install jq)
 * In EC2:
-  * valid keypair for the region
-  * security group that allows all outbound communication and inbound for ports 8080 and 27017
+  * Valid key pair for the region
+  * Store the .pem file in the folder of your choice, make sure that read rights are configured by running the following command in the terminal: chmod 400 /folder/key_file_name.pem
+  * Security group that allows all outbound communication and inbound for ports 8080 and 27017
 
 
 HOWTO
@@ -36,5 +40,7 @@ OWNERTAG=(value of the Owner tag on the instances)
 ```
 
 then `./launch-om.sh` should do the trick.
+
+One OM is deployed, your default browser will open with the login page, you will see the credentials in the terminal: admin@localhost.com / abc_ABC1
 
 Destroy everything with `./teardown-om.sh`
