@@ -39,6 +39,8 @@ NAMETAG=(prefix for the Name tag on the instances)
 OWNERTAG=(value of the Owner tag on the instances)
 ```
 
+NEW! Optionally you can add a NUM_HOSTS variable with the number of MongoDB hosts you want to spin up (default 3)
+
 then `./launch-om.sh` should do the trick.
 
 One OM is deployed, your default browser will open with the login page, you will see the credentials in the terminal: admin@localhost.com / abc_ABC1
