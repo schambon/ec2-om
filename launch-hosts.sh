@@ -1,4 +1,4 @@
-AGENT_VERSION=11.0.7.6992
+AGENT_VERSION=11.0.10.7021
 
 export AWS_PAGER=""
 # $1 is supposed to have the OM host's public PublicDnsName
@@ -17,7 +17,7 @@ echo "Starting instances and downloading agent from $PUBDNS; Project is $PROJECT
 # start 3 hosts and install the agent
 aws ec2 run-instances --image-id $IMAGE --count $NUM_HOSTS --instance-type t2.small --key-name $KEYNAME \
   --security-group-ids $SECGROUP --block-device-mappings '[{"DeviceName": "/dev/xvda", "Ebs": {"DeleteOnTermination": true, "VolumeSize": 100, "VolumeType": "gp3"}}]' \
-  --tag-specification "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG-instances\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"2021-12-31\"}, {Key=purpose,Value=\"$PURPOSETAG\"}]" > /dev/null
+  --tag-specification "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG-instances\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"2022-12-31\"}, {Key=purpose,Value=\"$PURPOSETAG\"}]" > /dev/null
 
 wait 1
 count=$(aws ec2 describe-instances --filters "Name=tag:owner,Values=$OWNERTAG" "Name=tag:Name,Values=$NAMETAG-instances" "Name=instance-state-name,Values=running" | jq -r '.Reservations[0].Instances | length')

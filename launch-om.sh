@@ -2,7 +2,7 @@ PURPOSETAG=other
 
 source config.sh
 
-OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-5.0.2.100.20210901T1556Z-1.x86_64.rpm
+OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-5.0.5.100.20211201T1756Z-1.x86_64.rpm
 
 export AWS_PAGER=""
 # start instance to run Ops Manager
@@ -10,7 +10,7 @@ export AWS_PAGER=""
 echo "Spinning up AWS instance for Ops Manager"
 aws ec2 run-instances --image-id $IMAGE --count 1 --instance-type t3a.xlarge --key-name $KEYNAME \
   --security-group-ids $SECGROUP --block-device-mappings '[{"DeviceName": "/dev/xvda", "Ebs": {"DeleteOnTermination": true, "VolumeSize": 100, "VolumeType": "gp3"}}]' \
-  --tag-specification "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG-om\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"2021-12-31\"}, {Key=purpose,Value=\"$PURPOSETAG\"}}]" > /dev/null
+  --tag-specification "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG-om\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"2022-12-31\"}, {Key=purpose,Value=\"$PURPOSETAG\"}]" > /dev/null
 
 echo "Done"
 # wait a couple seconds that the instance is up
