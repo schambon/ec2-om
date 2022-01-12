@@ -19,7 +19,7 @@ aws ec2 run-instances --image-id $IMAGE --count $NUM_HOSTS --instance-type t2.sm
   --security-group-ids $SECGROUP --block-device-mappings '[{"DeviceName": "/dev/xvda", "Ebs": {"DeleteOnTermination": true, "VolumeSize": 100, "VolumeType": "gp3"}}]' \
   --tag-specification "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG-instances\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"2022-12-31\"}, {Key=purpose,Value=\"$PURPOSETAG\"}]" > /dev/null
 
-wait 1
+sleep 1
 count=$(aws ec2 describe-instances --filters "Name=tag:owner,Values=$OWNERTAG" "Name=tag:Name,Values=$NAMETAG-instances" "Name=instance-state-name,Values=running" | jq -r '.Reservations[0].Instances | length')
 until test $count -eq $NUM_HOSTS
 do
