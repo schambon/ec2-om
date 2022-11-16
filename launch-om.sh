@@ -2,7 +2,7 @@ PURPOSETAG=other
 
 source config.sh
 
-OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-6.0.2.100.20220802T0955Z.x86_64.rpm
+OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-6.0.6.100.20221102T1837Z.x86_64.rpm
 
 export AWS_PAGER=""
 # start instance to run Ops Manager

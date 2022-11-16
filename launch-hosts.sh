@@ -1,4 +1,4 @@
-AGENT_VERSION=12.0.10.7591
+AGENT_VERSION=12.0.14.7630
 
 export AWS_PAGER=""
 # $1 is supposed to have the OM host's public PublicDnsName
