@@ -38,6 +38,7 @@ IMAGE=(Amazon Linux 2 AMI; for eu-west-3 I use this one: ami-093fa4c538885becf)
 NAMETAG=(prefix for the Name tag on the instances)
 OWNERTAG=(value of the Owner tag on the instances)
 PURPOSETAG=(value of the Purpose tag on the instances)
+EXPIREON=(value of the Expire-On tag on the instances)
 ```
 
 NEW! Optionally you can add a NUM_HOSTS variable with the number of MongoDB hosts you want to spin up (default 3)
