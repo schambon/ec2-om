@@ -3,7 +3,7 @@ EXPIREON=2023-12-31
 
 source config.sh
 
-OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-6.0.8.100.20230111T1641Z.x86_64.rpm
+OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-6.0.9.100.20230201T2148Z.x86_64.rpm
 
 export AWS_PAGER=""
 # start instance to run Ops Manager
