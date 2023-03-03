@@ -52,6 +52,11 @@ sudo tee -a /etc/mongodb-mms/automation-agent.config <<-CONF_FILE
 mmsGroupId=$PROJECT_ID
 mmsApiKey=$AGENT_API_KEY
 mmsBaseUrl=http://$PUBDNS:8080
+logFile=/var/log/mongodb-mms-automation/automation-agent.log
+mmsConfigBackup=/var/lib/mongodb-mms-automation/mms-cluster-config-backup.json
+logLevel=INFO
+maxLogFiles=10
+maxLogFileSize=268435456
 CONF_FILE
 sudo systemctl enable mongodb-mms-automation-agent
 sudo systemctl start mongodb-mms-automation-agent
