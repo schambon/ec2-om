@@ -75,7 +75,7 @@ done
 
 echo "Can connect to $PUBDNS:8080"
 
-export MY_IP=$(curl ifconfig.me)
+export MY_IP=$(curl -4 ifconfig.me)
 USERNAME=admin@localhost.com
 PASSWORD=abc_ABC1
 FIRST=Admin
