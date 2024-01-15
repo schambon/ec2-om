@@ -34,7 +34,7 @@ Create a file called config.sh containing:
 KEYNAME=(your key name as exists in EC2)
 KEYPATH=(local path to your pem-encoded private key)
 SECGROUP=(your security group identifier)
-IMAGE=(Amazon Linux 2 AMI; for eu-west-3 I use this one: ami-093fa4c538885becf)
+IMAGE=(Amazon Linux AMI; for instance this one is known to work in January 2024: ami-04b7bf9494d21c5bb)
 NAMETAG=(prefix for the Name tag on the instances)
 OWNERTAG=(value of the Owner tag on the instances)
 PURPOSETAG=(value of the Purpose tag on the instances)
