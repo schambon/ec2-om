@@ -49,3 +49,10 @@ then `./launch-om.sh` should do the trick.
 One OM is deployed, your default browser will open with the login page, you will see the credentials in the terminal: admin@localhost.com / abc_ABC1
 
 Destroy everything with `./teardown-om.sh`
+
+NOTES
+-----
+
+- When you login to Ops Manager, go to profile > invitations and accept the invite to demo-project (otherwise you won't have data explorer permissions...)
+- In the project, you should enable Monitoring (and optionally Backup) on the agents for every server in the Servers view, before deploying MongoDB.
+
