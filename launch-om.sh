@@ -3,7 +3,8 @@ EXPIREON=2023-12-31
 
 source config.sh
 
-OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-6.0.9.100.20230201T2148Z.x86_64.rpm
+#OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-6.0.9.100.20230201T2148Z.x86_64.rpm
+OM_VERSION=https://downloads.mongodb.com/on-prem-mms/rpm/mongodb-mms-7.0.4.500.20240405T1431Z.x86_64.rpm
 
 export AWS_PAGER=""
 # start instance to run Ops Manager
@@ -35,7 +36,7 @@ done
 # install mongo, shell, and OM rpms
 ssh -i $KEYPATH -oStrictHostKeyChecking=no ec2-user@$PUBDNS <<EOF
 sudo yum install -y $OM_VERSION
-sudo yum install -y https://repo.mongodb.org/yum/amazon/2/mongodb-org/6.0/x86_64/RPMS/mongodb-org-server-6.0.1-1.amzn2.x86_64.rpm
+sudo yum install -y https://repo.mongodb.org/yum/amazon/2023/mongodb-org/7.0/x86_64/RPMS/mongodb-org-server-7.0.8-1.amzn2023.x86_64.rpm
 sudo systemctl start mongod
 sudo tee -a /opt/mongodb/mms/conf/conf-mms.properties <<-CONF_FILE
 mms.ignoreInitialUiSetup=true

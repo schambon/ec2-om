@@ -1,4 +1,4 @@
-AGENT_VERSION=12.0.17.7665
+AGENT_VERSION=107.0.4.8567
 
 export AWS_PAGER=""
 # $1 is supposed to have the OM host's public PublicDnsName
@@ -8,7 +8,7 @@ AGENT_API_KEY=$3
 
 NUM_HOSTS=3
 PURPOSETAG=other
-EXPIREON=2023-12-31
+EXPIREON=2024-12-31
 
 source config.sh
 
@@ -46,7 +46,7 @@ echo "Can ssh"
 ssh -i $KEYPATH -oStrictHostKeyChecking=no ec2-user@$inst <<-EOC
 sudo hostname $inst
 sudo yum install -y http://$PUBDNS:8080/download/agent/automation/mongodb-mms-automation-agent-manager-$AGENT_VERSION-1.x86_64.rhel7.rpm
-sudo yum install -y cyrus-sasl cyrus-sasl-gssapi cyrus-sasl-plain krb5-libs libcurl net-snmp openldap openssl xz-libs
+sudo yum install -y cyrus-sasl cyrus-sasl-gssapi cyrus-sasl-plain krb5-libs openldap openssl xz-libs
 sudo cat /etc/mongodb-mms/automation-agent.config | grep -v mmsGroupId | grep -v mmsApiKey | grep -v mmsBaseUrl | sudo tee /etc/mongodb-mms/automation-agent.config
 sudo tee -a /etc/mongodb-mms/automation-agent.config <<-CONF_FILE
 mmsGroupId=$PROJECT_ID
