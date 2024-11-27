@@ -13,7 +13,7 @@ export AWS_PAGER=""
 # t3a.medium has 4GB RAM - should be enough for a demo config
 echo "Spinning up AWS instance for Ops Manager"
 aws ec2 run-instances --image-id $IMAGE --count 1 --instance-type t3a.xlarge --key-name $KEYNAME \
-  --security-group-ids $SECGROUP --block-device-mappings '[{"DeviceName": "/dev/xvda", "Ebs": {"DeleteOnTermination": true, "VolumeSize": 100, "VolumeType": "gp3"}}]' \
+  --security-group-ids $SECGROUP --subnet-id $SUBNET --block-device-mappings '[{"DeviceName": "/dev/xvda", "Ebs": {"DeleteOnTermination": true, "VolumeSize": 100, "VolumeType": "gp3"}}]' \
   --tag-specification "ResourceType=instance,Tags=[{Key=Name, Value=\"$NAMETAG-om\"},{Key=owner, Value=\"$OWNERTAG\"}, {Key=expire-on,Value=\"$EXPIREON\"}, {Key=purpose,Value=\"$PURPOSETAG\"}]" > /dev/null
 
 echo "Done"
