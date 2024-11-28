@@ -21,7 +21,7 @@ Prerequisites
 * In EC2:
   * Valid key pair for the region
   * Store the .pem file in the folder of your choice, make sure that read rights are configured by running the following command in the terminal: chmod 400 /folder/key_file_name.pem
-  * Security group that allows all outbound communication and inbound for ports 8080 and 27017
+  * Security group that allows all outbound communication and inbound for ports 8080 and 27017, as well as inbound SSH from your machine (or VPN)
 
 
 HOWTO
